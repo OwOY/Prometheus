@@ -53,22 +53,48 @@ docker run \
 ```
 - prometheus.yml:
 ```
-# global config
+# Sample config for Prometheus.
+
 global:
-  scrape_interval:     15s
-  evaluation_interval: 15srule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'example'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  # - "first.rules"
+  # - "second.rules"
+
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
 
-  - job_name: 'cadvisor'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    scrape_timeout: 5s
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
     static_configs:
-      - targets: ['localhost:8080']
+      - targets: ['35.239.150.35:9090']
+
+  - job_name: 'node'
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['35.239.150.35:9100']
+
+  - job_name: "docker"
+    static_configs:
+      - targets: ['35.239.150.35:8888']
 ```
 ### 完成:
 - 完成上述設定後，可進入 localhost:9090 看見此監控畫面。
