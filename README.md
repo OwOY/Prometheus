@@ -92,9 +92,9 @@ scrape_configs:
     static_configs:
       - targets: ['35.239.150.35:9100']
 
-  - job_name: "docker"
+  - job_name: "cAdvisor"
     static_configs:
-      - targets: ['35.239.150.35:8888']
+      - targets: ['cAdvisor:8888']
 ```
 ### 完成:
 - 完成上述設定後，可進入 localhost:9090 看見此監控畫面。
