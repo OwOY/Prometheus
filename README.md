@@ -130,3 +130,4 @@ scrape_configs:
 - [Prometheus-Book](https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/quickstart/why-monitor#yi-yu-guan-li)
 - [開源監控docker的三大神器 – grafana+cAdvisor+prometheus](https://sectools.tw/docker-monitor/)
 - [警示條件範本](https://samber.github.io/awesome-prometheus-alerts/rules.html)
+- [阿里雲Prometheus Doc](https://help.aliyun.com/document_detail/176180.html#section-78l-udp-gcs)
