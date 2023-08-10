@@ -100,8 +100,33 @@ scrape_configs:
 - 完成上述設定後，可進入 localhost:9090 看見此監控畫面。
 ![image.png](/prometheus/1.png)
 
+# 警示條件設定
+1. 建立警示.yaml檔案  
+   alert.yaml
+   ```
+   groups:
+       - name: example
+         rules:
+           # Alert for any instance that is unreachable for >5 minutes.
+           - alert: InstanceDown
+             expr: up == 0
+             for: 5m
+             labels:
+               severity: page
+             annotations:
+               summary: "Instance {{ $labels.instance }} down"
+               description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+   ```
+2. 在 prometheus.yaml 檔內加上 rule_files
+   ```
+   rule_files:
+     - alert.yaml
 
+   scrape_configs: ......
+   ```
+3. 詳細警示條件範例請參照 [警示條件範本](https://samber.github.io/awesome-prometheus-alerts/rules.html)
 ---- 
 # 參考文件
-- https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/quickstart/why-monitor#yi-yu-guan-li
-- https://sectools.tw/docker-monitor/
+- [Prometheus-Book](https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/quickstart/why-monitor#yi-yu-guan-li)
+- [開源監控docker的三大神器 – grafana+cAdvisor+prometheus](https://sectools.tw/docker-monitor/)
+- [警示條件範本](https://samber.github.io/awesome-prometheus-alerts/rules.html)
