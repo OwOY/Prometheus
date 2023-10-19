@@ -30,6 +30,22 @@ Prometheus Server中自帶了一個Prometheus UI，通過這個UI可以方便地
 - 開放性
 對於Prometheus來說，使用Prometheus的client library的輸出格式不止支持Prometheus的格式化數據，也可以輸出支持其它監控系統的格式化數據，比如Graphite。
 <br><br>
+# 公式邏輯
+- rate  
+  選取一個時間區間值算出該時間內平均變化量。  
+  >> (value2 - value1)/time  
+    
+  ex:  
+    圖1為一般正常圖表:  
+    ![image.png](/prometheus/promSample.png)  
+    圖2為rate5分鐘圖表:  
+    ![image.png](/prometheus/promSample1.png)  
+  !! 注意  
+  時間與設定值會相差1min(間隔4分鐘)  
+  ex: rate(net_conntrack_dialer_conn_closed_total{instance='10.42.16.165:9093', dialer_name='opsgenie'}[5m])   
+  於 4:50:24 增加 1，因此計算rate時的公式為 1/((5-1)*60) = 0.004166666666666667  
+  此值會位於 圖2上的 4:50:24 位置(表示4:45:24~4:50:24間的平均變化量)  
+  
 # 使用方法
 ### 安裝
 - Ubuntu
